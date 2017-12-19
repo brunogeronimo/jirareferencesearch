@@ -16,4 +16,3 @@ $router->get('/', function () use ($router) {
 });
 
 
-$router->get('/search', 'JiraController@search');
