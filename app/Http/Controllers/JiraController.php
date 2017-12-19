@@ -7,3 +7,4 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 class JiraController extends BaseController
 {
 
+}
