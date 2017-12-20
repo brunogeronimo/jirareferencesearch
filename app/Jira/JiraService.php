@@ -54,12 +54,10 @@ class JiraService
 		foreach ($issues as $issue) {
 			$reference = (isset($issue->fields->customfield_10510) ? $issue->fields->customfield_10510 : null);
 			$aux = [
-				'warranty' => [
-					'key' => $issue->key,
-					'status' => $issue->fields->status->name,
-					'reference' => $reference
-				],
-				'references' => []
+				'key' => $issue->key,
+				'status' => $issue->fields->status->name,
+				'references' => $reference,
+				'referencesStatus' => []
 			];
 
 			$referenceInfo = [];
@@ -72,13 +70,13 @@ class JiraService
 							$referenceInfo['status'] = $blabla->fields->status->name;
 					}catch(\GuzzleHttp\Exception\RequestException $e){
 						if ($e->hasResponse()){
-							$referenceInfo['errors'][] = [
+							$referenceInfo['error'] = [
 								'code' => $e->getCode(),
 								'message' => $e->getMessage()
 							];
 						}
 					}
-					$aux['references'][] = $referenceInfo;
+					$aux['referencesStatus'][] = $referenceInfo;
 				}
 			}
 
