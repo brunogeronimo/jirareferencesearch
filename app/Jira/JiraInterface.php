@@ -35,13 +35,13 @@
 			return $instance;
 		}
 
-		private function instantiateClient($force = false){
-			if ($force || $this->client === null){
+		private function instantiateClient(){
+			if ($this->client === null){
 				$this->client = new \GuzzleHttp\Client();
 			}
 		}
 
-		private function makeUrl($endpoint = ''){
+		private function makeUrl(string $endpoint = ''){
 			return $this->getUrl() . self::JIRA_DEFAULT_API_URL . $endpoint;
 		}
 
@@ -73,8 +73,8 @@
 			return $this;
 		}
 
-		private function getClient(bool $force = false){
-			$this->instantiateClient($force);
+		private function getClient(){
+			$this->instantiateClient();
 			return $this->client;
 		}
 
@@ -101,13 +101,27 @@
 			return $response->getBody();
 		}
 
-		public function retrieveUrl($url = '', $fillWithUrl = true){
+		public function retrieveCustomUrl($url = ''){
 			if ($url === ''){
 				throw new Exception("URL must be set");
 			}
-			if ($fillWithUrl){
-				$url = $this->makeUrl($url);
+
+			$response = $this->getClient()->get(
+				$url,
+				[
+					'auth' => $this->getAuthentication(),
+					'debug' => $this->getDebug()
+				]
+			);
+			return $response->getBody();
+		}
+
+		public function retrieveUrl($url = ''){
+			if ($url === ''){
+				throw new Exception("URL must be set");
 			}
+
+			$url = $this->makeUrl($url);
 			$response = $this->getClient()->get(
 				$url,
 				[

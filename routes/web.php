@@ -17,3 +17,4 @@ $router->get('/', function () {
 
 
 $router->post('/search', 'JiraController@search');
+$router->post('/debug/search/{jira}', 'JiraController@debugSearch');
