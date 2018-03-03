@@ -98,6 +98,10 @@ class JiraService
 							$jiraSearchResult = json_decode($jiraInterface->retrieveUrl('/issue/' . $ref));
 							$referenceInfo['status'] = $jiraSearchResult->fields->status->name;
 							$referenceInfo['assignee'] = $jiraSearchResult->fields->assignee->key;
+							if (isset($jiraSearchResult->fields->fixVersions[0])){
+								$referenceInfo['fixedVersion'] = $jiraSearchResult->fields->fixVersions[0]->name;
+							}
+							$referenceInfo[''] = $jiraSearchResult->fields->assignee->key;
 					}catch(\GuzzleHttp\Exception\RequestException $e){
 						if ($e->hasResponse()){
 							$referenceInfo['error'] = [
